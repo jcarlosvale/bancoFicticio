@@ -2,7 +2,7 @@ package entidades.pessoa;
 
 import java.util.Objects;
 
-public class PessoaFisica implements Pessoa{
+public class PessoaFisica implements Cliente {
 
     private String nome;
     private String cpf;
@@ -31,5 +31,13 @@ public class PessoaFisica implements Pessoa{
     @Override
     public int hashCode() {
         return Objects.hash(nome, cpf);
+    }
+
+    @Override
+    public String toString() {
+        return "PessoaFisica{" +
+                "nome='" + nome + '\'' +
+                ", cpf='" + cpf + '\'' +
+                '}';
     }
 }

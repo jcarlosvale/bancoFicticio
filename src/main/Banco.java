@@ -7,7 +7,7 @@ import entidades.conta.ContaInvestimentoPF;
 import entidades.conta.ContaInvestimentoPJ;
 import entidades.conta.ContaPoupanca;
 import entidades.conta.TipoDeConta;
-import entidades.pessoa.Pessoa;
+import entidades.pessoa.Cliente;
 import entidades.pessoa.PessoaFisica;
 import entidades.pessoa.PessoaJuridica;
 
@@ -20,7 +20,7 @@ public class Banco {
 
     private String nome;
 
-    private Set<Pessoa> clientes;
+    private Set<Cliente> clientes;
     private Set<Conta> contas;
     private Map<Integer, Conta> mapaContas;
 
@@ -31,52 +31,64 @@ public class Banco {
         this.mapaContas = new HashMap<>();
     }
 
-    public Pessoa cadastrarPessoaFisica(String nome, String cpf) {
+    public void cadastrarPessoaFisica(String nome, String cpf) {
         var pessoaFisica = new PessoaFisica(nome, cpf);
         this.clientes.add(pessoaFisica);
-        return pessoaFisica;
     }
 
-    public Pessoa cadastrarPessoaJuridica(String razaoSocial, String cnpj) {
+    public void cadastrarPessoaJuridica(String razaoSocial, String cnpj) {
         var pessoaJuridica = new PessoaJuridica(razaoSocial, cnpj);
         this.clientes.add(pessoaJuridica);
-        return pessoaJuridica;
     }
 
-    public Conta abrirConta(Pessoa pessoa, TipoDeConta tipoDeConta) {
+    public Conta abrirConta(Cliente cliente, TipoDeConta tipoDeConta) {
         //TODO: se quiser, nao permitir o mesmo cliente ter mais de 1 conta do mesmo tipo
-        if (clientes.contains(pessoa)) {
+        if (clientes.contains(cliente)) {
             Conta contaNova;
-            if (pessoa instanceof PessoaFisica) {
-                contaNova = abrirContaPessoaFisica((PessoaFisica) pessoa, tipoDeConta);
+            if (cliente instanceof PessoaFisica) {
+                contaNova = abrirContaPessoaFisica((PessoaFisica) cliente, tipoDeConta);
             } else {
-                contaNova = abrirContaJuridica((PessoaJuridica) pessoa, tipoDeConta);
+                contaNova = abrirContaPessoaJuridica((PessoaJuridica) cliente, tipoDeConta);
             }
             contas.add(contaNova);
             mapaContas.put(contaNova.getNumeroConta(), contaNova);
             return contaNova;
         } else {
-            throw new RuntimeException("Nao é possível abrir a conta: pessoa nao cadastrada - " + pessoa);
+            throw new RuntimeException("Nao é possível abrir a conta: cliente nao cadastrada - " + cliente);
         }
     }
 
-    private Conta abrirContaJuridica(PessoaJuridica pessoa, TipoDeConta tipoDeConta) {
+    private Conta abrirContaPessoaJuridica(PessoaJuridica pessoa, TipoDeConta tipoDeConta) {
         var numeroConta = getNumeroConta();
+        Conta contaNova = null;
         switch (tipoDeConta) {
-            case CORRENTE: return new ContaCorrentePJ(pessoa, numeroConta);
-            case INVESTIMENTO: return new ContaInvestimentoPJ(pessoa, numeroConta);
-            default: throw new RuntimeException("Pessoa Juridica nao pode abrir conta: " + tipoDeConta);
+            case CORRENTE:
+                contaNova = new ContaCorrentePJ(pessoa, numeroConta);
+                break;
+            case INVESTIMENTO:
+                contaNova = new ContaInvestimentoPJ(pessoa, numeroConta);
+                break;
         }
+        mapaContas.put(numeroConta, contaNova);
+        return contaNova;
     }
 
     private Conta abrirContaPessoaFisica(PessoaFisica pessoa, TipoDeConta tipoDeConta) {
         var numeroConta = getNumeroConta();
+        Conta contaNova = null;
         switch (tipoDeConta) {
-            case CORRENTE: return new ContaCorrentePF(pessoa, numeroConta);
-            case POUPANCA: return new ContaPoupanca(pessoa, numeroConta);
-            case INVESTIMENTO: return new ContaInvestimentoPF(pessoa, numeroConta);
-            default: throw new RuntimeException("Pessoa Fisica nao pode abrir conta: " + tipoDeConta);
+            case CORRENTE:
+                contaNova = new ContaCorrentePF(pessoa, numeroConta);
+                break;
+            case POUPANCA:
+                contaNova = new ContaPoupanca(pessoa, numeroConta);
+                break;
+            case INVESTIMENTO:
+                contaNova = new ContaInvestimentoPF(pessoa, numeroConta);
+                break;
         }
+        mapaContas.put(numeroConta, contaNova);
+        return contaNova;
     }
 
     private int getNumeroConta() {
@@ -102,5 +114,38 @@ public class Banco {
     public void debitar(int numeroConta, double valor) {
         var conta = mapaContas.get(numeroConta);
         conta.debitar(valor);
+    }
+
+    public Conta abrirContaPessoaFisica(String nome, String cpf, TipoDeConta tipoDeConta) {
+        PessoaFisica cliente = new PessoaFisica(nome, cpf);
+        if (!clientes.contains(cliente)) {
+            clientes.add(cliente);
+        }
+        return abrirContaPessoaFisica(cliente, tipoDeConta);
+    }
+
+    public Conta abrirContaPessoaJuridica(String razaoSocial, String cnpj, TipoDeConta tipoDeConta) {
+        PessoaJuridica cliente = new PessoaJuridica(razaoSocial, cnpj);
+        if (!clientes.contains(cliente)) {
+            clientes.add(cliente);
+        }
+        return abrirContaPessoaJuridica(cliente, tipoDeConta);
+    }
+
+    public void debitar(Conta conta, double valor) {
+        conta.debitar(valor);
+    }
+
+    public Conta getConta(int numeroConta) {
+        return mapaContas.get(numeroConta);
+    }
+
+    public void creditar(Conta conta, double valor) {
+        conta.creditar(valor);
+    }
+
+    public void transferir(Conta contaOrigem, Conta contaDestino, double valor) {
+        contaOrigem.debitar(valor);
+        contaDestino.creditar(valor);
     }
 }
