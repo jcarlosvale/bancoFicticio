@@ -3,7 +3,7 @@ package main;
 import entidades.Banco;
 import entidades.conta.Conta;
 import entidades.conta.TipoDeConta;
-import main.util.Opcao;
+import main.util.Operacao;
 import main.util.Tela;
 
 import java.util.Scanner;
@@ -14,17 +14,29 @@ public class InternetBanking {
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {
-        Opcao opcao = Opcao.INVALIDA;
-        while (opcao != Opcao.SAIR) {
-            opcao = Tela.menuPrincipal();
-            processaMenuPrincipal(opcao);
+        Operacao operacao = Operacao.NENHUMA;
+        while (operacao != Operacao.SAIR) {
+            operacao = Tela.menuPrincipal();
+            processarOperacao(operacao);
         }
     }
 
-    private static void processaMenuPrincipal(Opcao opcao) {
-        switch (opcao) {
-            case ABRIR_CONTA:
-                menuAbrirConta();
+    private static void processarOperacao(Operacao operacao) {
+        switch (operacao) {
+            case ABRIR_CONTA_CORRENTE_PESSOA_FISICA:
+                abrirContaPessoaFisica(TipoDeConta.CORRENTE);
+                break;
+            case ABRIR_CONTA_POUPANCA_PESSOA_FISICA:
+                abrirContaPessoaFisica(TipoDeConta.POUPANCA);
+                break;
+            case ABRIR_CONTA_INVESTIMENTO_PESSOA_FISICA:
+                abrirContaPessoaFisica(TipoDeConta.INVESTIMENTO);
+                break;
+            case ABRIR_CONTA_CORRENTE_PESSOA_JURIDICA:
+                abrirContaPessoaJuridica(TipoDeConta.CORRENTE);
+                break;
+            case ABRIR_CONTA_INVESTIMENTO_PESSOA_JURIDICA:
+                abrirContaPessoaJuridica(TipoDeConta.INVESTIMENTO);
                 break;
             case SACAR:
                 sacar();
@@ -41,10 +53,25 @@ public class InternetBanking {
         }
     }
 
+    private static void abrirContaPessoaFisica(TipoDeConta tipoDeConta) {
+
+        System.out.print("Digite seu nome: ");
+        String nome = scanner.nextLine();
+
+        System.out.print("Digite seu cpf: ");
+        String cpf = scanner.nextLine();
+
+        Conta conta = banco.abrirContaPessoaFisica(nome, cpf, tipoDeConta);
+
+        System.out.println("CONTA PESSOA FISICA ABERTA");
+        System.out.println(conta);
+        continuar();
+    }
+
     private static void saldo() {
         Conta conta = lerConta();
         if (conta == null) {
-            System.out.println("CONTA NAO EXISTE!!! Pressione qualquer tecla!");
+            System.out.println("CONTA NAO EXISTE!!!");
             scanner.nextLine();
         } else {
             System.out.println("CONTA");
@@ -88,7 +115,7 @@ public class InternetBanking {
     private static void depositar() {
         Conta conta = lerConta();
         if (conta == null) {
-            System.out.println("CONTA NAO EXISTE!!! Pressione qualquer tecla!");
+            System.out.println("CONTA NAO EXISTE!!!");
             scanner.nextLine();
         } else {
             System.out.println("CONTA");
@@ -106,12 +133,11 @@ public class InternetBanking {
     private static void sacar() {
         Conta conta = lerConta();
         if (conta == null) {
-            System.out.println("CONTA NAO EXISTE!!! Pressione qualquer tecla!");
-            scanner.nextLine();
+            System.out.println("CONTA NAO EXISTE!!!");
+            continuar();
         } else {
             System.out.println("CONTA");
             System.out.println(conta);
-            System.out.println("Saldo da conta: " + conta.saldo());
             System.out.print("Valor a sacar: ");
             double valor = scanner.nextDouble();
             scanner.nextLine();
@@ -133,93 +159,17 @@ public class InternetBanking {
         scanner.nextLine();
     }
 
-    private static void menuAbrirConta() {
-        Opcao opcao = null;
-        while (opcao != Opcao.VOLTAR) {
-            opcao = Tela.menuAbrirConta();
-            processaMenuAbrirConta(opcao);
-        }
-    }
-
-    private static void processaMenuAbrirConta(Opcao opcao) {
-        if (opcao == Opcao.ABRIR_CONTA_PESSOA_FISICA) {
-            menuAbrirContaPessoaFisica();
-        }
-        if (opcao == Opcao.ABRIR_CONTA_PESSOA_JURIDICA) {
-            menuAbrirContaPessoaJuridica();
-        }
-    }
-
-    private static void menuAbrirContaPessoaJuridica() {
-        Opcao opcao = null;
-        while (opcao != Opcao.VOLTAR) {
-            opcao = Tela.menuAbrirContaPessoaJuridica();
-            processaMenuAbrirContaPessoaJuridica(opcao);
-        }
-    }
-
-    private static void processaMenuAbrirContaPessoaJuridica(Opcao opcao) {
-        TipoDeConta tipoDeConta;
-        if (opcao == Opcao.ABRIR_CONTA_CORRENTE_PESSOA_JURIDICA) tipoDeConta = TipoDeConta.CORRENTE;
-        else if (opcao == Opcao.ABRIR_CONTA_INVESTIMENTO_PESSOA_JURIDICA) tipoDeConta = TipoDeConta.INVESTIMENTO;
-        else return;
-        abrirContaPessoaJuridica(tipoDeConta);
-    }
-
     private static void abrirContaPessoaJuridica(TipoDeConta tipoDeConta) {
-        System.out.println("Digite a razao social: ");
+        System.out.print("Digite a razao social: ");
         String razaoSocial = scanner.nextLine();
 
-        System.out.println("Digite o cnpj: ");
+        System.out.print("Digite o cnpj: ");
         String cnpj = scanner.nextLine();
 
         Conta conta = banco.abrirContaPessoaJuridica(razaoSocial, cnpj, tipoDeConta);
 
-        System.out.println("CONTA PJ ABERTA");
-        System.out.println(conta);
-        continuar();
-
-    }
-
-    private static void menuAbrirContaPessoaFisica() {
-        Opcao opcao = null;
-        while (opcao != Opcao.VOLTAR) {
-            opcao = Tela.menuAbrirContaPessoaFisica();
-            processaMenuAbrirContaPessoaFisica(opcao);
-        }
-    }
-
-    private static void processaMenuAbrirContaPessoaFisica(Opcao opcao) {
-        TipoDeConta tipoDeConta;
-        switch (opcao) {
-            case ABRIR_CONTA_CORRENTE_PESSOA_FISICA:
-                tipoDeConta = TipoDeConta.CORRENTE;
-                break;
-            case ABRIR_CONTA_POUPANCA_PESSOA_FISICA:
-                tipoDeConta = TipoDeConta.POUPANCA;
-                break;
-            case ABRIR_CONTA_INVESTIMENTO_PESSOA_FISICA:
-                tipoDeConta = TipoDeConta.INVESTIMENTO;
-                break;
-            default:
-                return;
-        }
-        abrirContaPessoaFisica(tipoDeConta);
-    }
-
-    private static void abrirContaPessoaFisica(TipoDeConta tipoDeConta) {
-
-        System.out.println("Digite seu nome: ");
-        String nome = scanner.nextLine();
-
-        System.out.println("Digite seu cpf: ");
-        String cpf = scanner.nextLine();
-
-        Conta conta = banco.abrirContaPessoaFisica(nome, cpf, tipoDeConta);
-
-        System.out.println("CONTA PF ABERTA");
+        System.out.println("CONTA PESSOA JURIDICA ABERTA");
         System.out.println(conta);
         continuar();
     }
-
 }

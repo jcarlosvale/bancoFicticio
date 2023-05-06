@@ -95,7 +95,6 @@ public class Banco {
     }
 
     public void transferir(Conta contaOrigem, Conta contaDestino, double valor) {
-        contaOrigem.debitar(valor);
-        contaDestino.creditar(valor);
+        contaOrigem.transferir(contaDestino, valor);
     }
 }

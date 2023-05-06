@@ -11,10 +11,13 @@ public abstract class Conta {
     private int numeroConta;
     private LocalDate dataAbertura;
 
-    public Conta(Cliente titular, int numeroConta) {
+    private TipoDeConta tipoDeConta;
+
+    public Conta(Cliente titular, int numeroConta, TipoDeConta tipoDeConta) {
         this.titular = titular;
         this.numeroConta = numeroConta;
         this.dataAbertura = LocalDate.now();
+        this.tipoDeConta = tipoDeConta;
         this.saldo = 0;
     }
 
@@ -39,21 +42,11 @@ public abstract class Conta {
         return this.saldo;
     }
 
-    public LocalDate getDataAbertura() {
-        return dataAbertura;
-    }
-
-    public int getNumeroConta() {
-        return numeroConta;
-    }
-
     @Override
     public String toString() {
-        return "Conta{" +
-                "titular=" + titular +
-                ", saldo=" + saldo +
-                ", numeroConta=" + numeroConta +
-                ", dataAbertura=" + dataAbertura +
-                '}';
+        return "Conta: " + numeroConta + " - " + tipoDeConta + "\n" +
+                "Titular: " + titular + "\n" +
+                "Data de Abertura: " + dataAbertura + "\n" +
+                "Saldo: " + saldo;
     }
 }

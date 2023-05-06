@@ -7,7 +7,7 @@ public class ContaInvestimentoPJ extends ContaCorrentePJ{
     private static final double TAXA_INVESTIMENTO = 0.02;
 
     public ContaInvestimentoPJ(PessoaJuridica titular, int numeroConta) {
-        super(titular, numeroConta);
+        super(titular, numeroConta, TipoDeConta.INVESTIMENTO);
     }
 
     public void creditar(double valor) {

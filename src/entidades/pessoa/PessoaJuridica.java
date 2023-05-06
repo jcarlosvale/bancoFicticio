@@ -12,14 +12,6 @@ public class PessoaJuridica implements Cliente {
         this.cnpj = cnpj;
     }
 
-    public String getRazaoSocial() {
-        return razaoSocial;
-    }
-
-    public String getCnpj() {
-        return cnpj;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -35,9 +27,6 @@ public class PessoaJuridica implements Cliente {
 
     @Override
     public String toString() {
-        return "PessoaJuridica{" +
-                "razaoSocial='" + razaoSocial + '\'' +
-                ", cnpj='" + cnpj + '\'' +
-                '}';
+        return razaoSocial + " - CNPJ: " + cnpj;
     }
 }

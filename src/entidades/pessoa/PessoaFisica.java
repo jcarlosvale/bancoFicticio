@@ -12,14 +12,6 @@ public class PessoaFisica implements Cliente {
         this.cpf = cpf;
     }
 
-    public String getNome() {
-        return nome;
-    }
-
-    public String getCpf() {
-        return cpf;
-    }
-
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
@@ -35,9 +27,6 @@ public class PessoaFisica implements Cliente {
 
     @Override
     public String toString() {
-        return "PessoaFisica{" +
-                "nome='" + nome + '\'' +
-                ", cpf='" + cpf + '\'' +
-                '}';
+        return nome + " - CPF: " + cpf;
     }
 }

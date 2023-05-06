@@ -6,7 +6,7 @@ public class Tela {
 
     private static Scanner scanner = new Scanner(System.in);
 
-    public static Opcao menuPrincipal() {
+    public static Operacao menuPrincipal() {
         System.out.println("\n".repeat(5));
         System.out.println("######## MENU PRINCIPAL ######## ");
         System.out.println("1 - Abrir Conta");
@@ -17,80 +17,127 @@ public class Tela {
         System.out.println("9 - Sair");
         System.out.print("Digite uma opcao: ");
         int opcao = scanner.nextInt();
-        return opcaoEscolhidaMenuPrincipal(opcao);
+        return operacaoEscolhidaMenuPrincipal(opcao);
     }
 
-    private static Opcao opcaoEscolhidaMenuPrincipal(int opcao) {
+    private static Operacao operacaoEscolhidaMenuPrincipal(int opcao) {
         switch (opcao) {
-            case 1: return Opcao.ABRIR_CONTA;
-            case 2: return Opcao.SACAR;
-            case 3: return Opcao.DEPOSITAR;
-            case 4: return Opcao.TRANSFERIR;
-            case 5: return Opcao.SALDO;
-            case 9: return Opcao.SAIR;
-            default: return Opcao.INVALIDA;
+            case 1: return menuAbrirConta();
+            case 2: return Operacao.SACAR;
+            case 3: return Operacao.DEPOSITAR;
+            case 4: return Operacao.TRANSFERIR;
+            case 5: return Operacao.SALDO;
+            case 9: return Operacao.SAIR;
+            default: return Operacao.NENHUMA;
         }
     }
 
-    public static Opcao menuAbrirConta() {
-        System.out.println("\n".repeat(5));
-        System.out.println("######## ABRIR CONTA ######## ");
-        System.out.println("1 - Cliente Fisica");
-        System.out.println("2 - Cliente Juridica");
-        System.out.println("9 - Voltar");
-        System.out.print("Digite uma opcao: ");
-        int opcao = scanner.nextInt();
-        return opcaoEscolhidaMenuAbrirConta(opcao);
+    public static Operacao menuAbrirConta() {
+        OpcaoDeTela opcaoDeTela = OpcaoDeTela.INVALIDA;
+        while (opcaoDeTela == OpcaoDeTela.INVALIDA) {
+            System.out.println("\n".repeat(5));
+            System.out.println("######## ABRIR CONTA ######## ");
+            System.out.println("1 - Pessoa Fisica");
+            System.out.println("2 - Pessoa Juridica");
+            System.out.println("9 - Voltar");
+            System.out.print("Digite uma opcao: ");
+            int opcaoDigitada = scanner.nextInt();
+            opcaoDeTela = opcaoDeTelaEscolhidaMenuAbrirConta(opcaoDigitada);
+        }
+        return operacaoEscolhidaMenuAbrirConta(opcaoDeTela);
     }
 
-    private static Opcao opcaoEscolhidaMenuAbrirConta(int opcao) {
+    private static OpcaoDeTela opcaoDeTelaEscolhidaMenuAbrirConta(int opcao) {
         switch (opcao) {
-            case 1: return Opcao.ABRIR_CONTA_PESSOA_FISICA;
-            case 2: return Opcao.ABRIR_CONTA_PESSOA_JURIDICA;
-            case 9: return Opcao.VOLTAR;
-            default: return Opcao.INVALIDA;
+            case 1: return OpcaoDeTela.ABRIR_CONTA_PESSOA_FISICA;
+            case 2: return OpcaoDeTela.ABRIR_CONTA_PESSOA_JURIDICA;
+            case 9: return OpcaoDeTela.VOLTAR;
+            default: return OpcaoDeTela.INVALIDA;
         }
     }
 
-    public static Opcao menuAbrirContaPessoaFisica() {
-        System.out.println("\n".repeat(5));
-        System.out.println("######## ABRIR CONTA PF ######## ");
-        System.out.println("1 - Corrente");
-        System.out.println("2 - Poupança");
-        System.out.println("3 - Investimento");
-        System.out.println("9 - Voltar");
-        System.out.print("Digite uma opcao: ");
-        int opcao = scanner.nextInt();
-        return opcaoEscolhidaMenuAbrirContaPessoaFisica(opcao);
-    }
-
-    private static Opcao opcaoEscolhidaMenuAbrirContaPessoaFisica(int opcao) {
-        switch (opcao) {
-            case 1: return Opcao.ABRIR_CONTA_CORRENTE_PESSOA_FISICA;
-            case 2: return Opcao.ABRIR_CONTA_POUPANCA_PESSOA_FISICA;
-            case 3: return Opcao.ABRIR_CONTA_INVESTIMENTO_PESSOA_FISICA;
-            case 9: return Opcao.VOLTAR;
-            default: return Opcao.INVALIDA;
+    private static Operacao operacaoEscolhidaMenuAbrirConta(OpcaoDeTela opcaoDeTela) {
+        switch (opcaoDeTela) {
+            case ABRIR_CONTA_PESSOA_FISICA:
+                return menuAbrirContaPessoaFisica();
+            case ABRIR_CONTA_PESSOA_JURIDICA:
+                return menuAbrirContaPessoaJuridica();
+            default:
+                return Operacao.NENHUMA;
         }
     }
 
-    public static Opcao menuAbrirContaPessoaJuridica() {
-        System.out.println("\n".repeat(5));
-        System.out.println("######## ABRIR CONTA PJ ######## ");
-        System.out.println("1 - Corrente");
-        System.out.println("2 - Investimento");
-        System.out.println("9 - Voltar");
-        System.out.print("Digite uma opcao: ");
-        int opcao = scanner.nextInt();
-        return opcaoEscolhidaMenuAbrirContaPessoaJuridica(opcao);
+    public static Operacao menuAbrirContaPessoaFisica() {
+        OpcaoDeTela opcaoDeTela = OpcaoDeTela.INVALIDA;
+        while (opcaoDeTela == OpcaoDeTela.INVALIDA) {
+            System.out.println("\n".repeat(5));
+            System.out.println("######## ABRIR CONTA PF ######## ");
+            System.out.println("1 - Corrente");
+            System.out.println("2 - Poupança");
+            System.out.println("3 - Investimento");
+            System.out.println("9 - Voltar");
+            System.out.print("Digite uma opcao: ");
+            int opcaoDigitada = scanner.nextInt();
+            opcaoDeTela = opcaoDeTelaEscolhidaMenuAbrirContaPessoaFisica(opcaoDigitada);
+        }
+        return operacaoEscolhidaMenuAbrirContaPessoaFisica(opcaoDeTela);
     }
 
-    private static Opcao opcaoEscolhidaMenuAbrirContaPessoaJuridica(int opcao) {
+    private static Operacao operacaoEscolhidaMenuAbrirContaPessoaFisica(OpcaoDeTela opcaoDeTela) {
+        switch (opcaoDeTela) {
+            case ABRIR_CONTA_CORRENTE_PESSOA_FISICA:
+                return Operacao.ABRIR_CONTA_CORRENTE_PESSOA_FISICA;
+            case ABRIR_CONTA_POUPANCA_PESSOA_FISICA:
+                return Operacao.ABRIR_CONTA_POUPANCA_PESSOA_FISICA;
+            case ABRIR_CONTA_INVESTIMENTO_PESSOA_FISICA:
+                return Operacao.ABRIR_CONTA_INVESTIMENTO_PESSOA_FISICA;
+            default:
+                return Operacao.NENHUMA;
+        }
+    }
+
+    private static OpcaoDeTela opcaoDeTelaEscolhidaMenuAbrirContaPessoaFisica(int opcao) {
         switch (opcao) {
-            case 1: return Opcao.ABRIR_CONTA_CORRENTE_PESSOA_JURIDICA;
-            case 2: return Opcao.ABRIR_CONTA_INVESTIMENTO_PESSOA_JURIDICA;
-            case 9: return Opcao.VOLTAR;
-            default: return Opcao.INVALIDA;
+            case 1: return OpcaoDeTela.ABRIR_CONTA_CORRENTE_PESSOA_FISICA;
+            case 2: return OpcaoDeTela.ABRIR_CONTA_POUPANCA_PESSOA_FISICA;
+            case 3: return OpcaoDeTela.ABRIR_CONTA_INVESTIMENTO_PESSOA_FISICA;
+            case 9: return OpcaoDeTela.VOLTAR;
+            default: return OpcaoDeTela.INVALIDA;
+        }
+    }
+
+    public static Operacao menuAbrirContaPessoaJuridica() {
+        OpcaoDeTela opcaoDeTela = OpcaoDeTela.INVALIDA;
+        while (opcaoDeTela == OpcaoDeTela.INVALIDA) {
+            System.out.println("\n".repeat(5));
+            System.out.println("######## ABRIR CONTA PJ ######## ");
+            System.out.println("1 - Corrente");
+            System.out.println("2 - Investimento");
+            System.out.println("9 - Voltar");
+            System.out.print("Digite uma opcao: ");
+            int opcaoDigitada = scanner.nextInt();
+            opcaoDeTela = opcaoDeTelaEscolhidaMenuAbrirContaPessoaJuridica(opcaoDigitada);
+        }
+        return operacaoEscolhidaMenuAbrirContaPessoaJuridica(opcaoDeTela);
+    }
+
+    private static Operacao operacaoEscolhidaMenuAbrirContaPessoaJuridica(OpcaoDeTela opcaoDeTela) {
+        switch (opcaoDeTela) {
+            case ABRIR_CONTA_CORRENTE_PESSOA_JURIDICA:
+                return Operacao.ABRIR_CONTA_CORRENTE_PESSOA_JURIDICA;
+            case ABRIR_CONTA_INVESTIMENTO_PESSOA_JURIDICA:
+                return Operacao.ABRIR_CONTA_INVESTIMENTO_PESSOA_JURIDICA;
+            default:
+                return Operacao.NENHUMA;
+        }
+    }
+
+    private static OpcaoDeTela opcaoDeTelaEscolhidaMenuAbrirContaPessoaJuridica(int opcao) {
+        switch (opcao) {
+            case 1: return OpcaoDeTela.ABRIR_CONTA_CORRENTE_PESSOA_JURIDICA;
+            case 2: return OpcaoDeTela.ABRIR_CONTA_INVESTIMENTO_PESSOA_JURIDICA;
+            case 9: return OpcaoDeTela.VOLTAR;
+            default: return OpcaoDeTela.INVALIDA;
         }
     }
 }
