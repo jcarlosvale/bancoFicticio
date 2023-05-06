@@ -1,13 +1,16 @@
 package main;
 
+import entidades.Banco;
 import entidades.conta.Conta;
 import entidades.conta.TipoDeConta;
+import main.util.Opcao;
+import main.util.Tela;
 
 import java.util.Scanner;
 
 public class InternetBanking {
 
-    private static Banco banco = new Banco("Banco do Ze");
+    private static Banco banco = new Banco();
     private static Scanner scanner = new Scanner(System.in);
 
     public static void main(String[] args) {

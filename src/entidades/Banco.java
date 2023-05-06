@@ -1,4 +1,4 @@
-package main;
+package entidades;
 
 import entidades.conta.Conta;
 import entidades.conta.ContaCorrentePF;
@@ -18,44 +18,14 @@ import java.util.Set;
 
 public class Banco {
 
-    private String nome;
-
     private Set<Cliente> clientes;
     private Set<Conta> contas;
     private Map<Integer, Conta> mapaContas;
 
-    public Banco(String nome) {
-        this.nome = nome;
+    public Banco() {
         this.clientes = new HashSet<>();
         this.contas = new HashSet<>();
         this.mapaContas = new HashMap<>();
-    }
-
-    public void cadastrarPessoaFisica(String nome, String cpf) {
-        var pessoaFisica = new PessoaFisica(nome, cpf);
-        this.clientes.add(pessoaFisica);
-    }
-
-    public void cadastrarPessoaJuridica(String razaoSocial, String cnpj) {
-        var pessoaJuridica = new PessoaJuridica(razaoSocial, cnpj);
-        this.clientes.add(pessoaJuridica);
-    }
-
-    public Conta abrirConta(Cliente cliente, TipoDeConta tipoDeConta) {
-        //TODO: se quiser, nao permitir o mesmo cliente ter mais de 1 conta do mesmo tipo
-        if (clientes.contains(cliente)) {
-            Conta contaNova;
-            if (cliente instanceof PessoaFisica) {
-                contaNova = abrirContaPessoaFisica((PessoaFisica) cliente, tipoDeConta);
-            } else {
-                contaNova = abrirContaPessoaJuridica((PessoaJuridica) cliente, tipoDeConta);
-            }
-            contas.add(contaNova);
-            mapaContas.put(contaNova.getNumeroConta(), contaNova);
-            return contaNova;
-        } else {
-            throw new RuntimeException("Nao é possível abrir a conta: cliente nao cadastrada - " + cliente);
-        }
     }
 
     private Conta abrirContaPessoaJuridica(PessoaJuridica pessoa, TipoDeConta tipoDeConta) {
@@ -95,26 +65,6 @@ public class Banco {
         return contas.size() + 1;
     }
 
-
-    public String getNome() {
-        return nome;
-    }
-
-    public double getSaldo(int numeroConta) {
-
-        var conta = mapaContas.get(numeroConta);
-        return conta.saldo();
-    }
-
-    public void creditar(int numeroConta, double valor) {
-        var conta = mapaContas.get(numeroConta);
-        conta.creditar(valor);
-    }
-
-    public void debitar(int numeroConta, double valor) {
-        var conta = mapaContas.get(numeroConta);
-        conta.debitar(valor);
-    }
 
     public Conta abrirContaPessoaFisica(String nome, String cpf, TipoDeConta tipoDeConta) {
         PessoaFisica cliente = new PessoaFisica(nome, cpf);
