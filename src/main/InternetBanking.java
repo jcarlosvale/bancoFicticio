@@ -141,6 +141,7 @@ public class InternetBanking {
             System.out.print("Valor a sacar: ");
             double valor = scanner.nextDouble();
             scanner.nextLine();
+            //TODO: fazer debitar retornar booleano, SE FALSO: escrever nao foi possivel debitar
             banco.debitar(conta, valor);
             System.out.println("Novo saldo: " + conta.saldo());
             continuar();

@@ -24,7 +24,9 @@ public class ContaCorrentePJ extends Conta {
     @Override
     public void transferir(Conta conta, double valor) {
         //TODO: verificar valor eh positivo
+        //TODO: retirar a taxa, mas TRANSFERIR valor original
+        //TODO: validar se tem saldo
         valor -= TAXA_SAQUE * valor;
-        super.debitar(valor);
+        super.transferir(conta, valor);
     }
 }

@@ -2,7 +2,7 @@ package entidades.pessoa;
 
 import java.util.Objects;
 
-public class PessoaFisica implements Cliente {
+public class PessoaFisica extends Cliente {
 
     private String nome;
     private String cpf;

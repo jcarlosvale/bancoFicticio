@@ -1,5 +1,5 @@
 package entidades.pessoa;
 
-public interface Cliente {
+public abstract class Cliente {
 
 }

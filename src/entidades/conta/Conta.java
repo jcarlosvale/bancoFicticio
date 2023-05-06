@@ -29,6 +29,7 @@ public abstract class Conta {
 
     public void debitar(double valor) {
         // TODO: validar valor positivo
+        //TODO: ver se tem SALDO
         this.saldo -= valor;
     }
 
