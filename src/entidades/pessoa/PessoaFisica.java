@@ -2,14 +2,29 @@ package entidades.pessoa;
 
 import java.util.Objects;
 
-public class PessoaFisica extends Cliente {
-
-    private String nome;
-    private String cpf;
+public class PessoaFisica implements Pessoa{
+    private final String nome;
+    private final String cpf;
 
     public PessoaFisica(String nome, String cpf) {
         this.nome = nome;
         this.cpf = cpf;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getCpf() {
+        return cpf;
+    }
+
+    @Override
+    public String toString() {
+        return "PessoaFisica{" +
+                "nome='" + nome + '\'' +
+                ", cpf='" + cpf + '\'' +
+                '}';
     }
 
     @Override
@@ -17,16 +32,11 @@ public class PessoaFisica extends Cliente {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PessoaFisica that = (PessoaFisica) o;
-        return Objects.equals(nome, that.nome) && Objects.equals(cpf, that.cpf);
+        return Objects.equals(cpf, that.cpf);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nome, cpf);
-    }
-
-    @Override
-    public String toString() {
-        return nome + " - CPF: " + cpf;
+        return Objects.hash(cpf);
     }
 }

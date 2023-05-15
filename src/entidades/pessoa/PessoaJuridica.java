@@ -2,14 +2,22 @@ package entidades.pessoa;
 
 import java.util.Objects;
 
-public class PessoaJuridica extends Cliente {
+public class PessoaJuridica implements Pessoa{
 
-    private String razaoSocial;
-    private String cnpj;
+    private final String razaoSocial;
+    private final String cnpj;
 
     public PessoaJuridica(String razaoSocial, String cnpj) {
         this.razaoSocial = razaoSocial;
         this.cnpj = cnpj;
+    }
+
+    public String getRazaoSocial() {
+        return razaoSocial;
+    }
+
+    public String getCnpj() {
+        return cnpj;
     }
 
     @Override
@@ -17,16 +25,19 @@ public class PessoaJuridica extends Cliente {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PessoaJuridica that = (PessoaJuridica) o;
-        return Objects.equals(razaoSocial, that.razaoSocial) && Objects.equals(cnpj, that.cnpj);
+        return Objects.equals(cnpj, that.cnpj);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(razaoSocial, cnpj);
+        return Objects.hash(cnpj);
     }
 
     @Override
     public String toString() {
-        return razaoSocial + " - CNPJ: " + cnpj;
+        return "PessoaJuridica{" +
+                "razaoSocial='" + razaoSocial + '\'' +
+                ", cnpj='" + cnpj + '\'' +
+                '}';
     }
 }

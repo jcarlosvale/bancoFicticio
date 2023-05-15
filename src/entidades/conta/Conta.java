@@ -1,53 +1,45 @@
 package entidades.conta;
 
-import entidades.pessoa.Cliente;
+import entidades.pessoa.Pessoa;
 
-import java.time.LocalDate;
+import java.util.Objects;
 
-public abstract class Conta {
+public class Conta {
+    private final String numeroConta;
+    private final TipoDeConta tipoDeConta;
 
-    private Cliente titular;
-    private double saldo;
-    private int numeroConta;
-    private LocalDate dataAbertura;
-
-    private TipoDeConta tipoDeConta;
-
-    public Conta(Cliente titular, int numeroConta, TipoDeConta tipoDeConta) {
-        this.titular = titular;
+    public Conta(Pessoa titular, String numeroConta, TipoDeConta tipoDeConta) {
         this.numeroConta = numeroConta;
-        this.dataAbertura = LocalDate.now();
         this.tipoDeConta = tipoDeConta;
-        this.saldo = 0;
+    }
+
+    public String getNumeroConta() {
+        return numeroConta;
+    }
+
+    public TipoDeConta getTipoDeConta() {
+        return tipoDeConta;
     }
 
 
-    public void creditar(double valor) {
-        // TODO: validar valor positivo
-        this.saldo += valor;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Conta conta = (Conta) o;
+        return Objects.equals(numeroConta, conta.numeroConta) && tipoDeConta == conta.tipoDeConta;
     }
 
-    public void debitar(double valor) {
-        // TODO: validar valor positivo
-        //TODO: ver se tem SALDO
-        this.saldo -= valor;
-    }
-
-    public void transferir(Conta conta, double valor) {
-        //TODO: validar valor positivo
-        this.debitar(valor);
-        conta.creditar(valor);
-    }
-
-    public double saldo() {
-        return this.saldo;
+    @Override
+    public int hashCode() {
+        return Objects.hash(numeroConta, tipoDeConta);
     }
 
     @Override
     public String toString() {
-        return "Conta: " + numeroConta + " - " + tipoDeConta + "\n" +
-                "Titular: " + titular + "\n" +
-                "Data de Abertura: " + dataAbertura + "\n" +
-                "Saldo: " + saldo;
+        return "Conta{" +
+                "numeroConta='" + numeroConta + '\'' +
+                ", tipoDeConta=" + tipoDeConta +
+                '}';
     }
 }
