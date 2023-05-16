@@ -27,12 +27,12 @@ public class Conta {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Conta conta = (Conta) o;
-        return Objects.equals(numeroConta, conta.numeroConta) && tipoDeConta == conta.tipoDeConta;
+        return Objects.equals(numeroConta, conta.numeroConta);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(numeroConta, tipoDeConta);
+        return Objects.hash(numeroConta);
     }
 
     @Override
