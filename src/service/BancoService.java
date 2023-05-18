@@ -5,13 +5,14 @@ import entidades.conta.Conta;
 import entidades.conta.TipoDeConta;
 import entidades.pessoa.Pessoa;
 import entidades.pessoa.PessoaFisica;
+import entidades.pessoa.PessoaJuridica;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeMap;
 
 public class BancoService {
 
@@ -22,10 +23,6 @@ public class BancoService {
 
     private int numeroConta = 1;
 
-    private String gerarNumeroConta() {
-        return Integer.toString(numeroConta++);
-    }
-
     public Cliente abrirContaPF(final String nome, final String cpf) {
 
         final Pessoa pessoa = new PessoaFisica(nome, cpf);
@@ -35,8 +32,18 @@ public class BancoService {
         } else {
             return getInformacaoDeCliente(pessoa);
         }
-
     }
+
+    public Cliente abrirContaPJ(final String razaoSocial, final String cnpj) {
+        final Pessoa pessoa = new PessoaJuridica(razaoSocial, cnpj);
+
+        if(!ehCliente(pessoa)) {
+            return cadastrarNovoCliente(pessoa);
+        } else {
+            return getInformacaoDeCliente(pessoa);
+        }
+    }
+
 
     private Cliente getInformacaoDeCliente(Pessoa pessoa) {
         return mapaPessoasCadastradas.get(pessoa);
@@ -46,28 +53,36 @@ public class BancoService {
         return mapaPessoasCadastradas.containsKey(pessoa);
     }
 
-    private Cliente cadastrarNovoCliente(Pessoa pessoa) {
+    private Cliente cadastrarNovoCliente(final Pessoa pessoa) {
+
+        final List<Conta> listaDeContas = new ArrayList<>();
+
         final Conta corrente = new Conta(pessoa, gerarNumeroConta(), TipoDeConta.CORRENTE);
-        final Conta poupanca = new Conta(pessoa, gerarNumeroConta(),TipoDeConta.POUPANCA);
+        listaDeContas.add(corrente);
+
         final Conta investimento = new Conta(pessoa, gerarNumeroConta(),TipoDeConta.INVESTIMENTO);
+        listaDeContas.add(investimento);
 
-        final Cliente cliente = new Cliente(pessoa, List.of(corrente, poupanca, investimento));
+        if (pessoa instanceof PessoaFisica) {
+            final Conta poupanca = new Conta(pessoa, gerarNumeroConta(),TipoDeConta.POUPANCA);
+            listaDeContas.add(poupanca);
+        }
 
+        final Cliente cliente = new Cliente(pessoa, listaDeContas);
         clientesDoBanco.add(cliente);
 
-        mapaContasCadastradas.put(corrente, cliente);
-        mapaContasCadastradas.put(poupanca, cliente);
-        mapaContasCadastradas.put(investimento, cliente);
-
         mapaPessoasCadastradas.put(pessoa, cliente);
+
+        for(Conta conta : listaDeContas) {
+            mapaContasCadastradas.put(conta, cliente);
+        }
 
         return cliente;
     }
 
-//    public Conta abrirContaPJ(final String razaoSocial, final String cnpj) {
-//
-//    }
-
+    private String gerarNumeroConta() {
+        return Integer.toString(numeroConta++);
+    }
 
     public static void main(String[] args) {
 
