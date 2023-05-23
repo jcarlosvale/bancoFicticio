@@ -7,6 +7,7 @@ import entidades.pessoa.Pessoa;
 import entidades.pessoa.PessoaFisica;
 import entidades.pessoa.PessoaJuridica;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -27,23 +28,42 @@ public class BancoService {
 
         final Pessoa pessoa = new PessoaFisica(nome, cpf);
 
-        if(!ehCliente(pessoa)) {
-            return cadastrarNovoCliente(pessoa);
-        } else {
-            return getInformacaoDeCliente(pessoa);
-        }
+        return abrirConta(pessoa);
     }
 
     public Cliente abrirContaPJ(final String razaoSocial, final String cnpj) {
         final Pessoa pessoa = new PessoaJuridica(razaoSocial, cnpj);
 
+        return abrirConta(pessoa);
+    }
+
+
+    public void creditar(final Integer numeroConta, final BigDecimal valor) {
+
+        if (numeroConta == null) {
+
+        }
+
+        if (valor == null) {
+
+        }
+
+        if (valor.compareTo(BigDecimal.ZERO) <= 0) {
+
+        }
+
+    }
+
+
+
+
+    private Cliente abrirConta(final Pessoa pessoa) {
         if(!ehCliente(pessoa)) {
             return cadastrarNovoCliente(pessoa);
         } else {
             return getInformacaoDeCliente(pessoa);
         }
     }
-
 
     private Cliente getInformacaoDeCliente(Pessoa pessoa) {
         return mapaPessoasCadastradas.get(pessoa);
@@ -84,47 +104,58 @@ public class BancoService {
         return Integer.toString(numeroConta++);
     }
 
+
+
+
+
+
     public static void main(String[] args) {
+        //Wrapper Classes
+        /*
+        boolean <--> Boolean
 
-//        Map<Conta, Cliente> mapaContasCadastradas = new HashMap<>();
-//
-//        Pessoa pessoaA = new PessoaFisica("Joao", "1");
-//        Conta contaA = new Conta(pessoaA, "1", TipoDeConta.POUPANCA);
-//        Cliente clienteA = new Cliente(pessoaA, List.of(contaA));
-//        mapaContasCadastradas.put(contaA, clienteA);
-//
-//        Pessoa pessoaB = new PessoaFisica("Maria", "2");
-//        Conta contaB = new Conta(pessoaB, "2", TipoDeConta.CORRENTE);
-//        Cliente clienteB = new Cliente(pessoaB, List.of(contaB));
-//        mapaContasCadastradas.put(contaB, clienteB);
-//
-//
-//        Pessoa pessoaC = new PessoaFisica("Jose", "3");
-//        Conta contaC = new Conta(pessoaC, "3", TipoDeConta.INVESTIMENTO);
-//        Cliente clienteC = new Cliente(pessoaC, List.of(contaC));
-//        mapaContasCadastradas.put(contaC, clienteC);
-//
-//        Set<Cliente> clientesDoBanco = Set.of(clienteA, clienteB, clienteC);
-//
-//        System.out.println(clientesDoBanco);
+        char <--> Character(*)
 
-        Map<Integer, String> pessoaMap = new HashMap<>();
-        pessoaMap.put(33, "Flavia");
-        pessoaMap.put(7, "Patricia");
-        pessoaMap.put(10, "Joao");
-        pessoaMap.put(10, "Janaina");
+        byte <--> Byte
+        short <--> Short
+        int <--> Integer(*)
+        long <--> Long
 
-//        System.out.println(pessoaMap.get(7));
-//        System.out.println(pessoaMap.get(10));
+        float <--> Float
+        double <--> Double
+         */
+        //Collection --> só armazena objetos!!! List, Map, Set
 
-        System.out.println(pessoaMap.keySet());
-        System.out.println(pessoaMap.values());
-        System.out.println(pessoaMap.containsKey(66));
-        System.out.println(pessoaMap.containsValue("Flavia"));
 
+
+
+        // NPE = null pointer exception
+
+        // TRY -> tente
+        // CATCH -> capture
+        // FINALLY -> finalmente
+        // THROW(S) -> lançar
+
+
+        String nome = null;
+
+        try {
+
+            System.out.println("BLOCO PROTEGIDO");
+            System.out.println(nome.toUpperCase());
+            System.out.println("FIM BLOCO PROTEGIDO");
+        } catch (Exception e) {
+
+            System.out.println("BLOCO DE ERRO");
+
+        } finally {
+
+            System.out.println("BLOCO FINALLY");
+
+        }
+
+        System.out.println("FIM DE PROGRAMA");
 
     }
-
-
 
 }

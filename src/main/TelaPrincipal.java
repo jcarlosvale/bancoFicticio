@@ -20,5 +20,16 @@ public class TelaPrincipal {
         Cliente clienteCharlatao = bancoService.abrirContaPF("Maria", "862.221.670-55");
         System.out.println(clienteCharlatao);
         System.out.println(clienteCharlatao.equals(clientePF));  //true
+
+        //CREDITAR
+
+//        bancoService.creditar(12,120.00);
+
+
+
+
+
+
+
     }
 }
