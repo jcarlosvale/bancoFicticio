@@ -7,6 +7,8 @@ import entidades.pessoa.Pessoa;
 import entidades.pessoa.PessoaFisica;
 import entidades.pessoa.PessoaJuridica;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,18 +40,18 @@ public class BancoService {
     }
 
 
-    public void creditar(final Integer numeroConta, final BigDecimal valor) {
+    public void creditar(final int numeroConta, final BigDecimal valor) {
 
-        if (numeroConta == null) {
-
-        }
+//        if (numeroConta == null) {
+//
+//        }
 
         if (valor == null) {
-
+            throw new ValorInvalidoException("Valor nulo, não é possível creditar");
         }
 
         if (valor.compareTo(BigDecimal.ZERO) <= 0) {
-
+            throw new ValorInvalidoException("Valor negativo, não é possível creditar");
         }
 
     }
@@ -126,9 +128,6 @@ public class BancoService {
          */
         //Collection --> só armazena objetos!!! List, Map, Set
 
-
-
-
         // NPE = null pointer exception
 
         // TRY -> tente
@@ -136,26 +135,29 @@ public class BancoService {
         // FINALLY -> finalmente
         // THROW(S) -> lançar
 
+        // TRY-WITH-RESOURCES
 
-        String nome = null;
+        // EXCECOES CHECADAS/VERIFICADA  x NAO-CHECADAS/NAO-VERIFICADAS
+        // EXCECAO NAO CHECADA = HERDA RUNTIME EXCEPTION
+        // EXCECAO CHECADA = NAO HERDA RUNTIME EXCEPTION, HERDA EXCEPTION/ THROWABLE
 
-        try {
 
-            System.out.println("BLOCO PROTEGIDO");
-            System.out.println(nome.toUpperCase());
-            System.out.println("FIM BLOCO PROTEGIDO");
-        } catch (Exception e) {
+        //        String nome = null;
+        //        System.out.println(nome.toUpperCase());
+        //        System.out.println("FIM DE PROGRAMA");
 
-            System.out.println("BLOCO DE ERRO");
+        lerArquivo();
 
-        } finally {
-
-            System.out.println("BLOCO FINALLY");
-
-        }
-
-        System.out.println("FIM DE PROGRAMA");
 
     }
+
+
+    public static void lerArquivo() {
+
+//        FileInputStream GFG = new FileInputStream("/Desktop/GFG.txt");
+        throw new NullPointerException("Excecao que a Patricia aprendeu");
+
+    }
+
 
 }
